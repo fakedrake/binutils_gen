@@ -21,7 +21,7 @@ setup(
     install_requires=['pyrametros'],
     dependency_links=["https://github.com/fakedrake/Pyrametros/tarball/master"],
     tests_require=['nose'],
-    long_description=read('README.txt'),
+    long_description=read('README.org'),
     test_suite='binutils_gen.test',
     entry_points={'console_scripts':['binutils_gen = binutils_gen:binutils.main'] },
     classifiers=[
