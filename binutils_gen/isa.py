@@ -30,7 +30,7 @@ class InstructionSet(object):
         """Create an opcode array and dump into the header file.
 
         """
-        self._opc_fill(names_file, names_tag)
+        self._opc_fill(names_file, names_tag, representation=lambda o:o.vname() + ",\n")
         self._string_fill("#define INVALID_INST %s\n" % self.invalid_opcode.bit_seq, opcode_file, invalid_tag)
         return self._opc_fill(opcode_file, opcode_tag)
 
