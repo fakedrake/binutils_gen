@@ -17,8 +17,8 @@ def nema_root(rel_fname, root=DEFAULT_NEMA_ROOT):
     return os.path.abspath(os.path.join(root, rel_fname))
 
 
-DEFAULT_OPC = nema_root("nemaweaver-binutiuls/opcodes/nemaweaver-opc.h")
-DEFAULT_OPCM = nema_root("nemaweaver-binutiuls/opcodes/nemaweaver-opcm.h")
+DEFAULT_OPC = nema_root("nemaweaver-binutils/opcodes/nemaweaver-opc.h")
+DEFAULT_OPCM = nema_root("nemaweaver-binutils/opcodes/nemaweaver-opcm.h")
 DEFAULT_ISA = nema_root("NemaSpec/Nema_ISA.txt")
 
 
