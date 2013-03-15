@@ -22,3 +22,5 @@ BITFIELD_PROPERTIES = [
     # Modifiers should have all the information they need
     ArgProperties(rx("[fvh].$"), modifier=capitalize_symbol),
     ArgProperties(rx("flag$"), modifier=turn_ignored)]
+
+DEFAULT_NEMA_ROOT = '.'

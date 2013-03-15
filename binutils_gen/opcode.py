@@ -3,6 +3,7 @@ from itertools import izip_longest
 from argument_types import ArgumentTypes
 from arguments import NemaWeaverOpcodeArg
 from bitfield import ParametricBitfield
+from config import ISAError
 
 class NemaWeaverOpcode(object):
     """Provides all information/formats needed for opcode
@@ -112,7 +113,10 @@ class NemaWeaverOpcode(object):
         return "{%s}," % inner
 
     def __eq__(self, target):
-        return self.bitfield == target.bitfield
+        try:
+            return self.bitfield == target.bitfield
+        except:
+            import ipdb; ipdb.set_trace()
 
 
 def check_duplicates(opc_list):

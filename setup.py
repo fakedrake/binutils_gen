@@ -10,7 +10,7 @@ def read(fname):
 
 setup(
     name = "binutils_gen",
-    version = "0.0.1",
+    version = "1.0",
     author = "Chris 'fakedrake' Perivolaropoulos",
     author_email = "darksaga2006@gmail.com",
     description = ("Generate binutils."),
