@@ -6,19 +6,15 @@
   - Then in NemaSpec create a virtual environment if you haven't done so already.
 
     #+BEGIN_SRC sh
-
 cd $NEMA_ROOT/NemaSpec
 virtualenv --no-site-packages .
-
     #+END_SRC
 
   - From the package's folder run setup.py install.
     #+BEGIN_SRC sh
-
 cd binutils_gen
 ../bin/python setup.py install
 cd ..
-
     #+END_SRC
 
   - Then run =bin/binutils_gen= from NemaSpec and everything will be
