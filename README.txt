@@ -1,0 +1,36 @@
+* Usage
+  Here is how to use binutils_gen:
+  - Clone this into NemaSpec
+  - Make sure you have the =NEMA_ROOT= variable set to the root of
+    the nema projects.
+  - Then in NemaSpec create a virtual environment if you haven't done so already.
+
+    #+BEGIN_SRC sh
+
+cd $NEMA_ROOT/NemaSpec
+virtualenv --no-site-packages .
+
+    #+END_SRC
+
+  - From the package's folder run setup.py install.
+    #+BEGIN_SRC sh
+
+cd binutils_gen
+../bin/python setup.py install
+cd ..
+
+    #+END_SRC
+
+  - Then run =bin/binutils_gen= from NemaSpec and everything will be
+    done automagically
+
+  - If you want to clean everything up, we support it now with the
+    =-c= option.
+
+  - To play with the command line parameters you can run
+
+    : bin/binutils_gen --help
+
+  - To fiddle with opcode arguments' parsing you want to edit
+    =binutils_gen/config.py=. The options in there should be more than
+    enough.
