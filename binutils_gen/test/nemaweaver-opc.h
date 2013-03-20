@@ -80,26 +80,28 @@
 
 #define MAX_OPCODES 280
 
+#define ARG_IS(opcode, i, val) (OP_BREAD5((i), (opcode)->arg_type) == (val))
 
-/* Register types */
-#define ARG_TYPE_REG        0x10
-#define ARG_TYPE_REG_FLOAT  0x1
-#define ARG_TYPE_REG_VECTOR 0x2
+/* Begin generated code: type constants */
 
-/* Immediate types */
-#define ARG_TYPE_IMM     0xf
-#define ARG_TYPE_UIMM    0xe
+/* End generated code: type constants */
 
-#define ARG_TYPE_INV        0x0
 
 /* The maximum registers an opcode can have as args. */
 #define ARG_MAX_REGS 5
 #define ARG_MAX 5
 
-/* Macros for argument types */
-#define INVALID_ARG(arg_i, opcode) (OP_BREAD5((arg_i), (opcode)->arg_type) != ARG_TYPE_INV)
-#define REGISTER_ARG(arg_i, opcode) (OP_BREAD5((arg_i), (opcode)->arg_type) & ARG_TYPE_REG)
-#define IMMEDIATE_ARG(arg_i, opcode)  (OP_BREAD5((arg_i), (opcode)->arg_type) & ARG_TYPE_IMM)
+/* Begin generated code: type checks */
+
+/* End generated code: type checks */
+
+/* Begin generated code: type groups */
+
+/* End generated code: type groups */
+
+/* Begin generated code: argument groups */
+
+/* End generated code: argument groups */
 
 /* Build an int with thes 5 bit values */
 #define OP_BUILD5(a0, a1, a2, a3, a4) (((a0)&0x1f)<<0 | ((a1)&0x1f)<<5 | ((a2)&0x1f)<<10 | ((a3)&0x1f)<<15 | ((a4)&0x1f)<<20)
@@ -117,10 +119,6 @@
 #define IMM_SIZE(op) DIV_CEIL(IMM_SIZE_BITS(op),8)
 #define IMM_BIT_POS(op) (ARG_SHIFT((op)->imm_arg, (op)) + IMM_SIZE(op))
 #define IMM_POS(op) (IMM_BIT_POS(op) / 8)
-
-#define REGISTER_TYPE(t) ((t) & ARG_TYPE_REG)
-#define FLOAT_REG(t) (((t) & ARG_TYPE_REG_FLOAT) && 1)
-#define VECTOR_REG(t) (((t) & ARG_TYPE_REG_VECTOR) && 1)
 
 struct op_code_struct
 {

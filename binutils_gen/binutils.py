@@ -47,3 +47,5 @@ def main():
     else:
         print "Creating opcodes..."
         isa.opcode_array(args.opc, args.opcm)
+        print "Creating types..."
+        isa.types_array(args.opc)

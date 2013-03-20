@@ -1,12 +1,10 @@
 import re
 
-from config import BITFIELD_PROPERTIES
-
 
 class NemaWeaverOpcodeArg(object):
     """This is an interface to get an argument"""
 
-    def __init__(self, syntax_token, bitfield, cmd, argument_properties=BITFIELD_PROPERTIES):
+    def __init__(self, syntax_token, bitfield, cmd, argument_types=[]):
         """To return the information the class needs to know which
         argument it is refering to (syntax_token) and the syntax of the resulting
         bitfield (bstr)"""
@@ -16,8 +14,9 @@ class NemaWeaverOpcodeArg(object):
         self.bitfield = bitfield
         self.immediate = False
         self.ignore = False
+        self.typemacro = "0"
 
-        for p in argument_properties:
+        for p in argument_types:
             p(self)
 
         if self.ignore:

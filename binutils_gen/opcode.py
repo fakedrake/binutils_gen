@@ -1,14 +1,13 @@
 from itertools import izip_longest
 
-from argument_types import ArgumentTypes
 from arguments import NemaWeaverOpcodeArg
 from bitfield import ParametricBitfield
-from config import ISAError
+from exceptions import ISAError
 
 class NemaWeaverOpcode(object):
     """Provides all information/formats needed for opcode
     representation compatible with binutils"""
-    def __init__(self, row, sanity_check=True):
+    def __init__(self, row, arg_types=[], sanity_check=True):
         self.name = row["opcode"]
 
         # Validity check
@@ -25,7 +24,7 @@ class NemaWeaverOpcode(object):
         self.jump = row["JUMP"]
         self.major = int(row['MAJOR'])
 
-        self.args = [NemaWeaverOpcodeArg(i.strip(), self.bitfield, self.name) for i in row["syntax"].split(',') if i != '']
+        self.args = [NemaWeaverOpcodeArg(i.strip(), self.bitfield, self.name, arg_types) for i in row["syntax"].split(',') if i != '']
         self.args = filter(bool, self.args)
 
         # Sanity check
@@ -62,7 +61,7 @@ class NemaWeaverOpcode(object):
     @property
     def types(self):
         """The entirety of the types attributes."""
-        return self._build5([ArgumentTypes.macroname(a.type) for a in self.args])
+        return self._build5([a.typemacro for a in self.args])
 
     @property
     def imm_arg(self):

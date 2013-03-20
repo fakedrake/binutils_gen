@@ -18,7 +18,7 @@ setup(
     keywords = "",
     url = "http://packages.python.org/binutils_gen",
     packages=['binutils_gen', 'binutils_gen.test'],
-    install_requires=['pyrametros'],
+    install_requires=['Pyrametros'],
     dependency_links=["https://github.com/fakedrake/Pyrametros/tarball/master"],
     tests_require=['nose'],
     long_description=read('README.org'),
