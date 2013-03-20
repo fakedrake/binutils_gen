@@ -64,6 +64,12 @@ class TestBinutils(unittest.TestCase):
         self.assertIn(IMM_GROUP_STR, "\n".join([i for i in self.isa.types_manager.type_group_macros()]))
         self.assertIn(IMM_ARG_GROUP_STR, "\n".join([i for i in self.isa.types_manager.argument_group_macros()]))
 
+    def test_prefixes(self, isa_file=ISA_FILE):
+        self.isa = InstructionSet(isa_file=isa_file)
+
+        self.assertIn("if (REG_TYPE(t))\n\treturn reg_prefix;", "\n".join([i for i in self.isa.types_manager.prefix_selector_code()]))
+        self.assertIn("char reg_prefix __attribute__ ((unused)) = \"r\";", "\n".join([i for i in self.isa.types_manager.prefix_variables()]))
+
     def tearDown(self, opcode_array_gen_file=OPCODE_ARRAY_GEN_FILE):
         """Remove everything from files."""
 

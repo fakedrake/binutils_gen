@@ -1,26 +1,28 @@
 from re import compile as rx
 
-from argument_types import ArgType, turn_immediate, capitalize_symbol, turn_ignored, register_prefix
+from argument_types import ArgType, turn_immediate, capitalize_symbol, turn_ignored
 from argument_groups import ArgGroup
 
 # Use add a predicate in this list to set a property to an argument
 # based on the regular expression of it's syntax.
 ARG_TYPES = [
     # Define the symbol before anything else
-    ArgType(rx("[vrfh]([tTsSrRdD])"), bitfield_symbol=1),
+    ArgType(regex=rx("[vrfh]([tTsSrRdD])"), bitfield_symbol=1),
+
+    # Registers
+    ArgType(arg_type="reg", prefix="r"),
+    ArgType(arg_type="reg_float", prefix="f"),
+    ArgType(arg_type="reg_vector", prefix="v"),
+    ArgType(arg_type="reg_half", prefix="h"),
 
     # Then define arg_types
-    ArgType(rx("[Ii]mm\d*$"), bitfield_symbol='i', arg_type="imm", modifier=turn_immediate),
-    ArgType(rx("u[Ii]mm\d*$"), bitfield_symbol='i', arg_type="uimm", modifier=turn_immediate),
-    ArgType(rx("r.$"), arg_type="reg", modifier=register_prefix("r")),
-    ArgType(rx("f.$"), arg_type="reg_float", modifier=register_prefix("f")),
-    ArgType(rx("v.$"), arg_type="reg_vector", modifier=register_prefix("v")),
-    ArgType(rx("h.$"), arg_type="reg_half", modifier=register_prefix("h")),
-    ArgType(rx("invalid_argument"), arg_type="inv"), # never matched
+    ArgType(regex=rx("[Ii]mm\d*$"), bitfield_symbol='i', arg_type="imm", modifier=turn_immediate),
+    ArgType(regex=rx("u[Ii]mm\d*$"), bitfield_symbol='i', arg_type="uimm", modifier=turn_immediate),
+    ArgType(regex=rx("invalid_argument"), arg_type="inv"), # never matched
 
     # Modifiers should have all the information they need
-    ArgType(rx("[fvh].$"), modifier=capitalize_symbol),
-    ArgType(rx("flag$"), modifier=turn_ignored)]
+    ArgType(regex=rx("[fvh].$"), modifier=capitalize_symbol),
+    ArgType(regex=rx("flag$"), modifier=turn_ignored)]
 
 # Argument groups may be used by binutils to check if an argument is
 # in a group

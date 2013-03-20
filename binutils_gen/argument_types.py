@@ -1,5 +1,6 @@
-from exceptions import ISAError
+from exceptions import BinutilGenError
 from re import compile as rx
+from re import search, match
 
 class ArgType(object):
     """ This decides and provides the argument's properties
@@ -30,6 +31,12 @@ class ArgType(object):
 
         if prefix is not None and regex is None:
             self.regex = rx(r"^%s" % prefix)
+
+        if prefix is not None and arg_type is None:
+            raise BinutilGenError("Argument has prefix but lacks arg_type.")
+
+        if arg_type is not None and (search(r"[)( !@#$%^&*\t\n]", arg_type) or match("^[0-9]", arg_type)):
+            raise BinutilGenError("arg_type should be a valid C variable name.")
 
     def __call__(self, opcode_arg):
         """Fill in the opcode_arg property. Return true if matched. Do nothing
@@ -83,10 +90,3 @@ def capitalize_symbol(arg):
         raise ISAError("Command %s, arg %s: Dont try to capitalize a symbol before you have defined it. Please rearrange your bitfield properties." % (arg.command, arg))
 
     arg.bitfield_symbol = arg.bitfield_symbol.upper()
-
-
-def register_prefix(prefix):
-    def _func(arg):
-        arg.prefix = prefix
-
-    return _func
