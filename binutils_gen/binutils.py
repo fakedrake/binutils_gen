@@ -31,7 +31,7 @@ def main():
     parser.add_argument('opc', nargs="?", help="The opcode header filename.", default=DEFAULT_OPC)
     parser.add_argument('opcm', nargs="?", help="The isa opcode names filename.", default=DEFAULT_OPCM)
 
-    parser.add_argument('--clean', '-c', help="The isa opcode names filename.", action='store_true')
+    parser.add_argument('-c', '--clean', help="Clear everything binutils_gen is responsible for generating.", action='store_true')
 
     args = parser.parse_args(argv[1:])
 
