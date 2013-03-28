@@ -6,7 +6,7 @@ class ArgType(object):
     """ This decides and provides the argument's properties
     """
 
-    def __init__(self, regex=None, bitfield_symbol=None, arg_type=None, modifier=None, prefix=None):
+    def __init__(self, regex=None, bitfield_symbol=None, arg_type=None, modifier=None, prefix=""):
         """Matching the regex defines bitfield_symbol and arg_type of the
         OpcodeArg. An argument value none is discarded.
 
@@ -32,7 +32,7 @@ class ArgType(object):
         if prefix is not None and regex is None:
             self.regex = rx(r"^%s" % prefix)
 
-        if prefix is not None and arg_type is None:
+        if prefix != "" and arg_type is None:
             raise BinutilGenError("Argument has prefix but lacks arg_type.")
 
         if arg_type is not None and (search(r"[)( !@#$%^&*\t\n]", arg_type) or match("^[0-9]", arg_type)):

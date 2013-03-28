@@ -18,6 +18,8 @@ ARG_TYPES = [
     # Then define arg_types
     ArgType(regex=rx("[Ii]mm\d*$"), bitfield_symbol='i', arg_type="imm", modifier=turn_immediate),
     ArgType(regex=rx("u[Ii]mm\d*$"), bitfield_symbol='i', arg_type="uimm", modifier=turn_immediate),
+    ArgType(regex=rx("s[Ii]mm\d*$"), bitfield_symbol='i', arg_type="simm", modifier=turn_immediate),
+
     ArgType(regex=rx("invalid_argument"), arg_type="inv"), # never matched
 
     # Modifiers should have all the information they need
@@ -29,7 +31,8 @@ ARG_TYPES = [
 ARG_TYPE_GROUPS = [
     ArgGroup("immediate", lambda at: at.modifier == turn_immediate),
     ArgGroup("register", lambda at: at.prefix != ""),
-    ArgGroup("invalid", lambda at: at.arg_type == "inv" or at.modifier == turn_ignored)]
+    ArgGroup("invalid", lambda at: at.arg_type == "inv" or at.modifier == turn_ignored),
+    ArgGroup("unsigned", lambda at: at.arg_type == "uimm" or at.arg_type == "imm")]
 
 DEFAULT_NEMA_ROOT = '.'
 

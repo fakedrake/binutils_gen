@@ -7,8 +7,13 @@ from exceptions import ISAError
 class NemaWeaverOpcode(object):
     """Provides all information/formats needed for opcode
     representation compatible with binutils"""
-    def __init__(self, row, arg_types=[], sanity_check=True):
+    def __init__(self, row, arg_types=[], sanity_check=True, invalid_arg_macro=None):
         self.name = row["opcode"]
+
+        if invalid_arg_macro is None:
+            self.invalid_arg_macro = [a.macroname() for a in arg_types if a.arg_type == "inv"][0]
+        else:
+            self.invalid_arg_macro = invalid_arg_macro
 
         # Validity check
         if row["N"] in ['0', '']:
@@ -41,7 +46,7 @@ class NemaWeaverOpcode(object):
         if len(vals) > 5:
             raise ISAError("Too many arguments provided for opcode %s." % self.name)
 
-        return "OP_BUILD5({0}, {1}, {2}, {3}, {4})".format( *[v for i,v in izip_longest(range(5), vals, fillvalue=0)] )
+        return "OP_BUILD5({0}, {1}, {2}, {3}, {4})".format( *[v for i,v in izip_longest(range(5), vals, fillvalue=fillvalue)] )
 
     def vname(self):
         """Name in a c-variable-friendly mode, aka no '.'s, receded
@@ -61,7 +66,7 @@ class NemaWeaverOpcode(object):
     @property
     def types(self):
         """The entirety of the types attributes."""
-        return self._build5([a.typemacro for a in self.args])
+        return self._build5([a.typemacro for a in self.args], fillvalue=self.invalid_arg_macro)
 
     @property
     def imm_arg(self):
