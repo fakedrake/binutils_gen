@@ -41,13 +41,16 @@ class InstructionSet(object):
         self._string_fill("#define INVALID_INST %s\n" % self.invalid_opcode.bit_seq, opcode_file, invalid_tag)
         return self._opc_fill(opcode_file, opcode_tag)
 
-    def types_array(self, filename, type_constant_tag=TYPE_CONSTANT_TAG, type_checks_tag=TYPE_CHECKS_TAG, type_groups_tag=TYPE_GROUPS_TAG, argument_groups_tag=ARGUMENT_GROUPS_TAG):
+    def types_array(self, filename, dis_filename, type_constant_tag=TYPE_CONSTANT_TAG, type_checks_tag=TYPE_CHECKS_TAG, type_groups_tag=TYPE_GROUPS_TAG, argument_groups_tag=ARGUMENT_GROUPS_TAG, type_prefixes_tag=TYPE_PREFIXES_TAG, type_prefixes_check_tag=TYPE_PREFIXES_CHECK_TAG):
         """Fill in the types and types' groups"""
 
         self._strings_fill(self.types_manager.type_constant_macros, filename, type_constant_tag)
         self._strings_fill(self.types_manager.type_check_macros, filename, type_checks_tag)
         self._strings_fill(self.types_manager.type_group_macros, filename, type_groups_tag)
         self._strings_fill(self.types_manager.argument_group_macros, filename, argument_groups_tag)
+
+        self._strings_fill(self.types_manager.prefix_variables, filename, type_prefixes_tag)
+        self._strings_fill(self.types_manager.prefix_selector_code, dis_filename, type_prefixes_check_tag)
 
     def _strings_fill(self, string_gen, filename, tag):
         """Fill up the tag with a list of strings.

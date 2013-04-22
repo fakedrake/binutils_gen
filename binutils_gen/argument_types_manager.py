@@ -52,7 +52,7 @@ class ArgumentTypeManager(object):
     def prefix_variables(self):
         """Generate prefix variables."""
         for t in self._prefixed_types():
-            yield "char %s_prefix __attribute__ ((unused)) = \"%s\";" % (t.name, t.prefix)
+            yield "static char %s_prefix[] __attribute__ ((unused)) = \"%s\";" % (t.name, t.prefix)
 
     def prefix_selector_code(self):
         """Generate c code that for unsiged t returns a pointer to the correct

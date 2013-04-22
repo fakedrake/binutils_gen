@@ -20,6 +20,7 @@ def nema_root(rel_fname, root=DEFAULT_NEMA_ROOT):
 DEFAULT_OPC = nema_root("nemaweaver-binutils/opcodes/nemaweaver-opc.h")
 DEFAULT_OPCM = nema_root("nemaweaver-binutils/opcodes/nemaweaver-opcm.h")
 DEFAULT_ISA = nema_root("NemaSpec/Nema_ISA.txt")
+DEFAULT_DIS = nema_root("nemaweaver-binutils/opcodes/nemaweaver-dis.c")
 
 
 def main():
@@ -30,6 +31,8 @@ def main():
     parser.add_argument('isa', nargs="?", help="The isa ascii table filename.", default=DEFAULT_ISA)
     parser.add_argument('opc', nargs="?", help="The opcode header filename.", default=DEFAULT_OPC)
     parser.add_argument('opcm', nargs="?", help="The isa opcode names filename.", default=DEFAULT_OPCM)
+    parser.add_argument('dis', nargs="?", help="The disassembler filename.", default=DEFAULT_DIS)
+
 
     parser.add_argument('-c', '--clean', help="Clear everything binutils_gen is responsible for generating.", action='store_true')
 
@@ -38,6 +41,7 @@ def main():
     print "ISA Table: %s" % args.isa
     print "Opcode header: %s" % args.opc
     print "Ocode names header: %s" % args.opcm
+    print "Disassembler source: %s" % args.dis
 
     isa = InstructionSet(isa_file=args.isa)
 
@@ -48,4 +52,4 @@ def main():
         print "Creating opcodes..."
         isa.opcode_array(args.opc, args.opcm)
         print "Creating types..."
-        isa.types_array(args.opc)
+        isa.types_array(args.opc, args.dis)

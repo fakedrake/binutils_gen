@@ -4,6 +4,8 @@ from arguments import NemaWeaverOpcodeArg
 from bitfield import ParametricBitfield
 from exceptions import ISAError
 
+OPCODE_TRANSFORM = r"rl:([a-z_]*)"
+
 class NemaWeaverOpcode(object):
     """Provides all information/formats needed for opcode
     representation compatible with binutils"""
@@ -104,12 +106,24 @@ class NemaWeaverOpcode(object):
         return self.pc_relative()
 
     def pc_relative(self):
-        """Is the immediate pc-relative
+        """Is the immediate pc-relative. This is true if pcrela or reljump is
+        in the jump column.
+
         """
         if "reljmp" in self.jump or "pcrela" in self.jump:
             return "INST_PC_OFFSET"
         else:
             return "INST_NO_OFFSET"
+
+    def transform_opcode(self, transform=OPCODE_TRANSFORM):
+        """Transform the opcode into this opcode. Return string or none."""
+        for i in self.jump:
+            match = transform.match(i)
+
+            if match:
+                return match.group(1)
+
+        return None
 
     def __str__(self):
         """The struct representation."""

@@ -34,7 +34,7 @@ ARG_TYPE_GROUPS = [
     ArgGroup("invalid", lambda at: at.arg_type == "inv" or at.modifier == turn_ignored),
     ArgGroup("unsigned", lambda at: at.arg_type == "uimm" or at.arg_type == "imm")]
 
-DEFAULT_NEMA_ROOT = '.'
+DEFAULT_NEMA_ROOT = '..'
 
 # Tags
 OPCODES_TAG = "opcodes"
@@ -44,5 +44,7 @@ TYPE_CHECKS_TAG = "type checks"
 TYPE_GROUPS_TAG = "type groups"
 ARGUMENT_GROUPS_TAG = "argument groups"
 INVALID_TAG = "invalid opcode"
+TYPE_PREFIXES_TAG = "type prefixes"
+TYPE_PREFIXES_CHECK_TAG = "type prefixes check"
 
 HARDCODED_TYPES = 1             # Number of hardcoded types. We are hardcoding INVALID
