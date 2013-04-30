@@ -9,7 +9,7 @@ class Transform(object):
 
         """
         self.from_opcode = from_opcode
-        self.invalid = (from_opcode.transform() is None)
+        self.invalid = from_opcode.transform_opcode() is None
 
         if self.invalid:
             return
@@ -21,6 +21,9 @@ class Transform(object):
 
         if self.to_opcode is None:
             raise IndexError("Transformation opcode %s of %s not found in ISA file." % (from_opcode.name, from_opcode.transform_opcode().name))
+
+        if self.to_opcode.opc_mask != self.from_opcode.opc_mask:
+            raise IndexError("Opcode %s and %s do not have the same constant mask." % (from_opcode.name, from_opcode.transform_opcode()))
 
     def __str__(self):
         """The struct to insert in the c code. We have enough info to make the

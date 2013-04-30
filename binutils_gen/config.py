@@ -46,5 +46,6 @@ ARGUMENT_GROUPS_TAG = "argument groups"
 INVALID_TAG = "invalid opcode"
 TYPE_PREFIXES_TAG = "type prefixes"
 TYPE_PREFIXES_CHECK_TAG = "type prefixes check"
+OPCODE_MAP_TAG = "opcode map"
 
 HARDCODED_TYPES = 1             # Number of hardcoded types. We are hardcoding INVALID

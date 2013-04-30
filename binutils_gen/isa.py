@@ -1,8 +1,11 @@
+from functools import partial
+
 from pyrametros import CFile, parse_file
 
 from opcode import NemaWeaverOpcode, check_duplicates
 from argument_types_manager import ArgumentTypeManager
 from config import *
+from binutils_gen.transform import transforms
 
 class InstructionSet(object):
     """ Container for the opcodes.
@@ -51,6 +54,9 @@ class InstructionSet(object):
 
         self._strings_fill(self.types_manager.prefix_variables, filename, type_prefixes_tag)
         self._strings_fill(self.types_manager.prefix_selector_code, dis_filename, type_prefixes_check_tag)
+
+    def opcode_transforms_array(self, filename, opcode_map_tag=OPCODE_MAP_TAG):
+        self._strings_fill(partial(transforms, self.opcodes), filename, opcode_map_tag)
 
     def _strings_fill(self, string_gen, filename, tag):
         """Fill up the tag with a list of strings.

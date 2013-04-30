@@ -1,10 +1,11 @@
 from itertools import izip_longest
+from re import compile as rx
 
 from arguments import NemaWeaverOpcodeArg
 from bitfield import ParametricBitfield
 from exceptions import ISAError
 
-OPCODE_TRANSFORM = r"rl:([a-z_]*)"
+OPCODE_TRANSFORM = rx(r"rl:([a-z_]*)")
 
 class NemaWeaverOpcode(object):
     """Provides all information/formats needed for opcode
@@ -117,11 +118,10 @@ class NemaWeaverOpcode(object):
 
     def transform_opcode(self, transform=OPCODE_TRANSFORM):
         """Transform the opcode into this opcode. Return string or none."""
-        for i in self.jump:
-            match = transform.match(i)
+        match = transform.match(self.jump)
 
-            if match:
-                return match.group(1)
+        if match:
+            return match.group(1)
 
         return None
 
