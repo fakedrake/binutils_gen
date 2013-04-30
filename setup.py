@@ -23,7 +23,7 @@ setup(
     tests_require=['nose'],
     long_description=read('README.org'),
     test_suite='binutils_gen.test',
-    entry_points={'console_scripts':['binutils_gen = binutils_gen:binutils.main'] },
+    entry_points={'console_scripts':['libsymbol = binutils_gen:libsymbol.main', 'binutils_gen = binutils_gen:binutils.main'] },
     classifiers=[
         "Programming Language :: Python :: 2.7",
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)"
