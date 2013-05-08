@@ -1,4 +1,5 @@
 * Usage
+** binutils_gen
   Here is how to use binutils_gen:
   - Clone this into NemaSpec
   - Make sure you have the =NEMA_ROOT= variable set to the root of
@@ -31,3 +32,15 @@ cd ..
   - To fiddle with opcode arguments' parsing you want to edit
     =binutils_gen/config.py=. The options in there should be more than
     enough.
+
+  - This will also teach binutils to change relative jump opcodes to
+    absolute jumps when they refer to =libnema= symbols. To disable
+    this functionality pass gas =--no-reljump-conversion=. This is
+    generally used when compiling the library itself.
+
+
+** =libsymbol=
+   This will generate a list of symbols in the library using =nm=. You
+   can choose your own version of =nm= but the default usually works
+   quite well. The generated file is meant to be used with the =ld='s option
+   =-R=. For more details take a look at =--help=.
