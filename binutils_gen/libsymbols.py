@@ -97,8 +97,7 @@ def main():
     parser.add_argument('--offset', '-o', help="Object offset", type=int, default=0)
     parser.add_argument('--nm', '-n', help="nm executable", default='nm')
     parser.add_argument('--exeternal', '-e',
-                        help="The header file to insert the names of the symbols. The tag used is
-                        'external symbols'",
+                        help="The header file to insert the names of the symbols. The tag used is 'external symbols'",
                         default=TC_NEMAWEAVER_H)
     parser.add_argument('--no-external', help="Dont do the external sybol part.", action='store_true')
 
