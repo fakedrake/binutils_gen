@@ -51,6 +51,7 @@ OPCODE_MAP_TAG = "opcode map"
 
 HARDCODED_TYPES = 1             # Number of hardcoded types. We are hardcoding INVALID
 
+# Helper functions
 def nema_root(rel_fname, root=DEFAULT_NEMA_ROOT):
     """ Nemaweaver root.
     """
@@ -61,6 +62,13 @@ def nema_root(rel_fname, root=DEFAULT_NEMA_ROOT):
 
     return os.path.abspath(os.path.join(root, rel_fname))
 
+def maybe_env(varname, alt_text='unset'):
+    """Return the value of the var in '' or the alt_text."""
+    val = os.getenv(varname)
+    if val:
+        return "'%s'" % val
+
+    return alt_text
 
 # Default paths
 DEFAULT_OPC = nema_root("nemaweaver-binutils/opcodes/nemaweaver-opc.h")
@@ -75,9 +83,9 @@ DEFAULT_LD_MAP = nema_root("libNema/nema_symbols.map")
 LIBSYMBOL_DESCRIPTION = """ Get a list of symbols and their offsets in memory given the
 files. Also inform the GNU assembler to recognize those symbols and
 enforce absolute jumps when encountered. Default file paths are
-created using environment variable 'NEMA_ROOT' (currently '%s'), or
-parent of the current directory if not set.""" % os.getenv("NEMA_ROOT")
+created using environment variable 'NEMA_ROOT' (currently %s), or
+parent of the current directory if not set.""" % maybe_env("NEMA_ROOT")
 
 BINUTILS_GEN_DESCRIPTION = """ Generate binutils from a NemaISA ascii table. Default paths are
 calculated according to environment variable 'NEMA_ROOT' (currently
-'%s'), or parent of current directory if not set.""" % os.getenv("NEMA_ROOT")
+%s), or parent of current directory if not set.""" % maybe_env("NEMA_ROOT")
