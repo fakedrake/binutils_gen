@@ -1,4 +1,5 @@
 from re import compile as rx
+import os
 
 from argument_types import ArgType, turn_immediate, capitalize_symbol, turn_ignored
 from argument_groups import ArgGroup
@@ -49,3 +50,34 @@ TYPE_PREFIXES_CHECK_TAG = "type prefixes check"
 OPCODE_MAP_TAG = "opcode map"
 
 HARDCODED_TYPES = 1             # Number of hardcoded types. We are hardcoding INVALID
+
+def nema_root(rel_fname, root=DEFAULT_NEMA_ROOT):
+    """ Nemaweaver root.
+    """
+    env_root = os.getenv('NEMA_ROOT')
+
+    if env_root is not None:
+        root = env_root
+
+    return os.path.abspath(os.path.join(root, rel_fname))
+
+
+# Default paths
+DEFAULT_OPC = nema_root("nemaweaver-binutils/opcodes/nemaweaver-opc.h")
+DEFAULT_OPCM = nema_root("nemaweaver-binutils/opcodes/nemaweaver-opcm.h")
+DEFAULT_ISA = nema_root("NemaSpec/Nema_ISA.txt")
+DEFAULT_DIS = nema_root("nemaweaver-binutils/opcodes/nemaweaver-dis.c")
+DEFAULT_TRANS = nema_root("nemaweaver-binutils/gas/config/tc-nemaweaver.h")
+DEFAULT_GAS_HEADER = nema_root("nemaweaver-binutils/gas/config/tc-nemaweaver.h")
+DEFAULT_LD_MAP = nema_root("libNema/nema_symbols.map")
+
+# Script help message descritions
+LIBSYMBOL_DESCRIPTION = """ Get a list of symbols and their offsets in memory given the
+files. Also inform the GNU assembler to recognize those symbols and
+enforce absolute jumps when encountered. Default file paths are
+created using environment variable 'NEMA_ROOT' (currently '%s'), or
+parent of the current directory if not set.""" % os.getenv("NEMA_ROOT")
+
+BINUTILS_GEN_DESCRIPTION = """ Generate binutils from a NemaISA ascii table. Default paths are
+calculated according to environment variable 'NEMA_ROOT' (currently
+'%s'), or parent of current directory if not set.""" % os.getenv("NEMA_ROOT")

@@ -6,8 +6,7 @@ import os
 
 from pyrametros import CFile
 
-SYMBOL_REGEX = r"[0-9]+ [a-zA-Z] [^\s]+"
-TC_NEMAWEAVER_H = "../../nemaweaver-binutils/gas/config/tc-nemaweaver.h"
+from binutils_gen.config import DEFAULT_GAS_HEADER, DEFAULT_LD_MAP, LIBSYMBOL_DESCRIPTION
 
 class Symbol(object):
     """A symbol that knows it's place.
@@ -81,9 +80,19 @@ def aligned_objects(obj_names_list, offset=0, nm_executable="nm", nm_arguments="
         offset += o.size
 
 def symbol_map(obj_names_list, offset=0, nm_executable="nm", nm_arguments="-g"):
+    """Given a list of obkect filenames return a list of their
+    symbols. This uses the default formatting for symbol
+    representation. Please refer to aligned_objects to change that.
+
+    """
+
     return "\n".join([str(f) for f in aligned_objects(obj_names_list, offset, nm_executable, nm_arguments)])
 
 def parse_symbol(sym, obj_file):
+    """ Given a sting from the nm command that represents a symbol, return
+    a Symbol object.
+    """
+
     arr = sym.split(" ")
     if len(arr) == 3 and re.match("[A-Z]", arr[1]):
         return Symbol(arr[2], arr[0], obj_file)
@@ -92,28 +101,45 @@ def parse_symbol(sym, obj_file):
 
 def main():
     """"The main entry point for symbol parsing."""
-    parser = argparse.ArgumentParser(description='Get a list of symbols and their offsets in memory given the files.')
-    parser.add_argument('objs', metavar="OBJ",  nargs="+", help="Object files in the order they are placed in memory.")
-    parser.add_argument('--offset', '-o', help="Object offset", type=int, default=0)
-    parser.add_argument('--nm', '-n', help="nm executable", default='nm')
-    parser.add_argument('--exeternal', '-e',
-                        help="The header file to insert the names of the symbols. The tag used is 'external symbols'",
-                        default=TC_NEMAWEAVER_H)
-    parser.add_argument('--no-external', help="Dont do the external sybol part.", action='store_true')
 
+    parser = argparse.ArgumentParser(description=LIBSYMBOL_DESCRIPTION)
+    parser.add_argument('objs', metavar="OBJS",  nargs="+", help="Object files in the order they are placed to be placed in memory.")
+    parser.add_argument('--offset', '-o', help="Object offset, by default 0", type=int, default=0)
+    parser.add_argument('--nm', '-n', help="nm executable. By default 'nm'", default='nm')
+    parser.add_argument('--gas-header', '-g',
+                        help="The header file to insert the names of the symbols which when gas \
+encounters will change the jump opcode to absolute jump. The tag used \
+is 'external symbols'. By default this is '%s'" % DEFAULT_GAS_HEADER,
+                        default=DEFAULT_GAS_HEADER)
+    parser.add_argument('--no-gas', help="Dont touch gas headers at all.", action='store_true')
+
+    parser.add_argument('--ld-map', '-l',
+                            help="Linker symbol map file. This file is to be passed to the linker when \
+linking a NemaWeaver executable using the -R option. Default is '%s'." % DEFAULT_LD_MAP,
+                            default=DEFAULT_LD_MAP)
+    parser.add_argument('-c', '--clean', help="Clear symbols from gas header file. This will be the only action taken.", action='store_true')
 
     args = parser.parse_args(sys.argv[1:])
 
-    print symbol_map(args.objs, offset=args.offset, nm_executable=args.nm)
+    if args.clean == True:
+        print "Clearing everything in %s..." % args.gas_header
+        cf = CFile(args.gas_header, "external symbols")
+        cf.push_line("\n")
+        cf.flush()
+        return
 
-    if not args.no_external:
-        print "Now the symbol names for cfile"
+    with open(args.ld_map, 'w') as ld_map_file:
+        print "Writing ld symbol map to file '%s'." % args.ld_map
+        ld_map_file.write( symbol_map(args.objs, offset=args.offset, nm_executable=args.nm) )
 
-        cf = CFile(args.external, "external symbols")
+
+    if not args.no_gas:
+        print "Writing the symbol names for cfile in '%s'." % args.gas_header
+
+        cf = CFile(args.gas_header, "external symbols")
         for o in aligned_objects(args.objs, offset=args.offset, nm_executable=args.nm):
             o.format_symbols("\"%(name)s\", \\")
             cf.push_line(str(o))
-            print cf.filling_string()
             cf.flush()
 
 
