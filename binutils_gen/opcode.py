@@ -1,11 +1,10 @@
 from itertools import izip_longest
 from re import compile as rx
 
-from arguments import NemaWeaverOpcodeArg
-from bitfield import ParametricBitfield
-from exceptions import ISAError
-
-OPCODE_TRANSFORM = rx(r"rl:([a-z_]*)")
+from binutils_gen.config import OPCODE_TRANSFORM
+from binutils_gen.arguments import NemaWeaverOpcodeArg
+from binutils_gen.bitfield import ParametricBitfield
+from binutils_gen.exceptions import ISAError
 
 class NemaWeaverOpcode(object):
     """Provides all information/formats needed for opcode

@@ -51,6 +51,9 @@ OPCODE_MAP_TAG = "opcode map"
 
 HARDCODED_TYPES = 1             # Number of hardcoded types. We are hardcoding INVALID
 
+# NemaISA.txt related
+OPCODE_TRANSFORM = rx(r"rl:([a-z_]*)")
+
 # Helper functions
 def nema_root(rel_fname, root=DEFAULT_NEMA_ROOT):
     """ Nemaweaver root.
