@@ -107,10 +107,11 @@ class NemaWeaverOpcode(object):
 
     def pc_relative(self):
         """Is the immediate pc-relative. This is true if pcrela or reljump is
-        in the jump column.
+        in the jump column or if this opcode can be changed into an
+        absolute one. (JUMP column -> rl:<abs opcode>)
 
         """
-        if "reljmp" in self.jump or "pcrela" in self.jump:
+        if "reljmp" in self.jump or "pcrela" in self.jump or self.transform_opcode() is not None:
             return "INST_PC_OFFSET"
         else:
             return "INST_NO_OFFSET"
